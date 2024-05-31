@@ -5,7 +5,7 @@ const nextConfig = {
   webpack: (config) => {
     config.plugins.push(
       new MonacoWebpackPlugin({
-        languages: ['javascript', 'typescript', 'json', 'rust'],
+        languages: ['rust']
       })
     );
     return config;

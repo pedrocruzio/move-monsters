@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import Instructions from './Instructions';
 import Console from './Console';
@@ -16,6 +17,7 @@ interface LessonProps {
 }
 
 const Lesson: React.FC<LessonProps> = ({ lessonId }) => {
+  const router = useRouter();
   const [lesson, setLesson] = useState<{ contentHtml: string, initial_code: string, correct_code: string } | null>(null);
   const [output, setOutput] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -58,7 +60,7 @@ const Lesson: React.FC<LessonProps> = ({ lessonId }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ code, lessonId }), // Ensure lessonId is passed here
+        body: JSON.stringify({ code, lessonId }),
       });
 
       const text = await response.text();
@@ -79,18 +81,18 @@ const Lesson: React.FC<LessonProps> = ({ lessonId }) => {
       if (result.success) {
         setOutput(result.message);
         setError(null);
-        setIsCodeCorrect(true); // Set the state to indicate the code is correct
-        setShowSuccessModal(true); // Show the success modal
+        setIsCodeCorrect(true); 
+        setShowSuccessModal(true); 
       } else {
         setError(result.message);
         setOutput(null);
-        setIsCodeCorrect(false); // Set the state to indicate the code is incorrect
+        setIsCodeCorrect(false); 
       }
     } catch (err) {
       console.error('Validation failed:', err);
       setError('Validation failed');
       setOutput(null);
-      setIsCodeCorrect(false); // Set the state to indicate the code is incorrect
+      setIsCodeCorrect(false); 
     }
   };
 
