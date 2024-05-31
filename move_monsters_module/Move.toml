@@ -1,0 +1,13 @@
+[package]
+name = "move_monsters_module"
+edition = "2024.beta"
+# license = "MIT"         
+# authors = ["Pedro Cruz (pedrocruztech@gmail.com)"]     
+
+[dependencies]
+Sui = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/sui-framework", rev = "framework/testnet" }
+
+[addresses]
+move_monsters_module = "0x0"
+
+
