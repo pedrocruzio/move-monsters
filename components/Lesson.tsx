@@ -101,8 +101,8 @@ const Lesson: React.FC<LessonProps> = ({ lessonId }) => {
 
   const handleNextLesson = () => {
     if (nftClaimed) {
-      // Logic to navigate to the next lesson
-      console.log('Navigating to the next lesson');
+      const nextLessonId = parseInt(lessonId) + 1;
+      router.push(`/lesson/${nextLessonId}`);
     } else {
       console.log('NFT not claimed yet');
     }
@@ -147,4 +147,5 @@ const Lesson: React.FC<LessonProps> = ({ lessonId }) => {
     </div>
   );
 };
+
 export default Lesson;
