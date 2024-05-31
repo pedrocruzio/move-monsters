@@ -4,7 +4,11 @@ import React, { useEffect, useRef } from 'react';
 import * as monaco from 'monaco-editor';
 import { registerMoveLanguage } from './moveLang';
 
-const MonacoEditor: React.FC = () => {
+interface MonacoEditorProps {
+  initialCode: string;
+}
+
+const MonacoEditor: React.FC<MonacoEditorProps> = ({ initialCode }) => {
   const editorRef = useRef<HTMLDivElement>(null);
   const editorInstanceRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
 
@@ -12,12 +16,7 @@ const MonacoEditor: React.FC = () => {
     if (editorRef.current) {
       registerMoveLanguage();
       editorInstanceRef.current = monaco.editor.create(editorRef.current, {
-        value: `module HelloWorld {
-  public fun hello() {
-    let greeting = "Hello, world!";
-    move_to(&greeting);
-  }
-}`,
+        value: initialCode,
         language: 'move',
         theme: 'vs-dark',
         minimap: {
@@ -29,7 +28,7 @@ const MonacoEditor: React.FC = () => {
     return () => {
       editorInstanceRef.current?.dispose();
     };
-  }, []);
+  }, [initialCode]);
 
   return <div ref={editorRef} className="h-full w-full" />;
 };
