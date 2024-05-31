@@ -1,11 +1,24 @@
 import React from 'react';
 
-const Console: React.FC = () => {
+interface ConsoleProps {
+  output: string | null;
+  error: string | null;
+  correctCode: string | null;
+}
+
+const Console: React.FC<ConsoleProps> = ({ output, error, correctCode }) => {
   return (
-    <div className="bg-gray-900 text-white p-2 h-48 overflow-y-auto">
-      <h2 className="text-lg font-bold">Console</h2>
-      <div id="console-output">
-      </div>
+    <div>
+      {output && <div className="mt-4 p-2 bg-green-100 text-green-800">{output}</div>}
+      {error && <div className="mt-4 p-2 bg-red-100 text-red-800">{error}</div>}
+      {correctCode && (
+        <div className="mt-4 p-2 bg-blue-100 text-blue-800">
+          <h3>Correct Code:</h3>
+          <pre className="bg-gray-800 text-white p-2 rounded">
+            <code>{correctCode}</code>
+          </pre>
+        </div>
+      )}
     </div>
   );
 };

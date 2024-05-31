@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import { ConnectButton } from '@mysten/dapp-kit';
 
 const Header: React.FC = () => {
   return (
@@ -9,7 +10,7 @@ const Header: React.FC = () => {
       <div className="flex items-center">
         <Image src="/move-monsters-logo.png" alt="Logo" width={200} height={200} />
       </div>
-      <button className="bg-blue-500 text-white px-4 py-2 rounded">Connect Wallet</button>
+      <ConnectButton />
     </header>
   );
 };
