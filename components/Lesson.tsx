@@ -6,6 +6,7 @@ import Instructions from './Instructions';
 import Console from './Console';
 import Navigation from './Navigation';
 import Header from './Header';
+import SuccessModal from './SuccessModal';
 import * as monaco from 'monaco-editor';
 
 const MonacoEditor = dynamic(() => import('../components/MonacoEditor'), { ssr: false });
@@ -21,6 +22,8 @@ const Lesson: React.FC<LessonProps> = ({ lessonId }) => {
   const [correctCode, setCorrectCode] = useState<string | null>(null);
   const [showCorrectCode, setShowCorrectCode] = useState<boolean>(false);
   const [isCodeCorrect, setIsCodeCorrect] = useState<boolean>(false);
+  const [showSuccessModal, setShowSuccessModal] = useState<boolean>(false);
+  const [nftClaimed, setNftClaimed] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchLessonData = async () => {
@@ -48,7 +51,7 @@ const Lesson: React.FC<LessonProps> = ({ lessonId }) => {
     const code = editor.getValue();
     console.log('Validating code for lessonId:', lessonId);
     console.log('Code:', code);
-  
+
     try {
       const response = await fetch('/api/validate', {
         method: 'POST',
@@ -57,10 +60,10 @@ const Lesson: React.FC<LessonProps> = ({ lessonId }) => {
         },
         body: JSON.stringify({ code, lessonId }), // Ensure lessonId is passed here
       });
-  
+
       const text = await response.text();
       console.log('Validation response text:', text);
-  
+
       let result;
       try {
         result = JSON.parse(text);
@@ -70,13 +73,14 @@ const Lesson: React.FC<LessonProps> = ({ lessonId }) => {
         setOutput(null);
         return;
       }
-  
+
       console.log('Validation result:', result);
-  
+
       if (result.success) {
         setOutput(result.message);
         setError(null);
         setIsCodeCorrect(true); // Set the state to indicate the code is correct
+        setShowSuccessModal(true); // Show the success modal
       } else {
         setError(result.message);
         setOutput(null);
@@ -87,6 +91,20 @@ const Lesson: React.FC<LessonProps> = ({ lessonId }) => {
       setError('Validation failed');
       setOutput(null);
       setIsCodeCorrect(false); // Set the state to indicate the code is incorrect
+    }
+  };
+
+  const handleClaimNft = () => {
+    setNftClaimed(true);
+    setShowSuccessModal(false);
+  };
+
+  const handleNextLesson = () => {
+    if (nftClaimed) {
+      // Logic to navigate to the next lesson
+      console.log('Navigating to the next lesson');
+    } else {
+      console.log('NFT not claimed yet');
     }
   };
 
@@ -120,8 +138,13 @@ const Lesson: React.FC<LessonProps> = ({ lessonId }) => {
         </div>
       </div>
       <Navigation lessonId={lessonId} setShowCorrectCode={setShowCorrectCode} isCodeCorrect={isCodeCorrect} />
+      <SuccessModal
+        isOpen={showSuccessModal}
+        onClose={() => setShowSuccessModal(false)}
+        onClaim={handleClaimNft}
+        onNextLesson={handleNextLesson}
+      />
     </div>
   );
 };
-
 export default Lesson;
