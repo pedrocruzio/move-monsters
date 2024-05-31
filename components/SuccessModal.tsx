@@ -35,7 +35,7 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose, onClaim, o
           onSuccess: (result) => {
             console.log('Minting response:', result);
             onClaim();
-            alert('Congratulations! Claim your NFT');
+            alert('Congratulations! Move on to the next lesson.');
           },
           onError: (error) => {
             console.error('Error minting NFT:', error);
